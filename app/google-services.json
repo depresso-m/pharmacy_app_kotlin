@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "201302926573",
+    "firebase_url": "https://pharmacyappdepresso-default-rtdb.firebaseio.com",
+    "project_id": "pharmacyappdepresso",
+    "storage_bucket": "pharmacyappdepresso.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201302926573:android:02f555655c8e2ce59018e4",
+        "android_client_info": {
+          "package_name": "com.example.kotlin_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCN1PkqI67CGbvVkVmbB3nEXD4EN4Voh7A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201302926573:android:0d5f5f1daf1f13e19018e4",
+        "android_client_info": {
+          "package_name": "com.example.pharmacy_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCN1PkqI67CGbvVkVmbB3nEXD4EN4Voh7A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

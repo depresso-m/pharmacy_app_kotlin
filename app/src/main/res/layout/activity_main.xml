@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/light_blue">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/help_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="start"
+            android:layout_marginEnd="30dp"
+            android:background="@null"
+            android:src="@drawable/baseline_help_24"
+            android:importantForAccessibility="no"
+            android:visibility="gone"/>
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:iconifiedByDefault="false"
+            android:background="@drawable/rounded_rectangle"
+            app:queryHint="@string/search"
+            android:visibility="gone" />
+
+
+        <ImageButton
+            android:id="@+id/clear_recent"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="30dp"
+            android:background="@null"
+            android:src="@drawable/baseline_delete_24"
+            android:importantForAccessibility="no"
+            android:visibility="gone"/>
+
+
+        <ImageButton
+            android:id="@+id/exit_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/exit_icon"
+            android:background="@null"
+            android:layout_gravity="end"
+            android:layout_marginEnd="25dp"
+            android:visibility="gone"/>
+
+        <ImageButton
+            android:id="@+id/create_collection_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="Создать новый список"
+            android:src="@drawable/add_icon"
+            android:background="@null"
+            tools:ignore="HardcodedText"
+            android:layout_gravity="end"
+            android:layout_marginEnd="25dp"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"/>
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="588dp"
+        android:layout_above="@id/bottom_navigation"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="0dp" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+    android:id="@+id/bottom_navigation"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="@color/light_blue"
+    app:menu="@menu/bottom_nav_menu"/>
+
+
+</RelativeLayout>

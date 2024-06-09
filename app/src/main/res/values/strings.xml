@@ -1,0 +1,52 @@
+<resources>
+    <string name="manufacturer">Производитель</string>
+    <string name="expiration_date">Срок годности</string>
+    <string name="manufacturer_country">Страна происхождения</string>
+    <string name="dosage_form">Лекарственная форма</string>
+    <string name="structure">Состав</string>
+    <string name="special_conditions">Особые условия</string>
+    <string name="drug_interaction">Лекарственное взаимодействие</string>
+    <string name="indications">Показания</string>
+    <string name="contraindications">Противопоказания</string>
+    <string name="overdose">Передозировка</string>
+    <string name="side_effects">Побочные действия</string>
+    <string name="login">Вход</string>
+    <string name="empty_list_message">Пока что эта коллекция пуста, добавляйте лекарства используя их страницы</string>
+    <string name="email">Email</string>
+    <string name="password">Пароль</string>
+    <string name="register">Регистрация</string>
+    <string name="click_to_login">Уже есть аккаунт</string>
+    <string name="click_to_register">Создать аккаунт</string>
+    <string name="app_name">Аптека</string>
+    <string name="confirm_password">Повторите пароль</string>
+    <string name="name">Ваше имя</string>
+    <string name="search">Поиск</string>
+    <string name="recent">Недавние</string>
+    <string name="collection">Профиль</string>
+    <string name="profile">Профиль</string>
+    <string name="collection_create_hint">Название коллекции</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="drug_name">Название</string>
+    <string name="drug_description">Описание</string>
+    <string name="hint_add_side_effect">Добавьте побочные эффекты</string>
+    <string name="hint_add_overdose">Добавьте передозировку</string>
+    <string name="hint_add_contraindications">Добавьте противопоказания</string>
+    <string name="hint_add_indications">Добавьте показания</string>
+    <string name="hint_add_drug_interaction">Добавьте лекарственное взаимодействие</string>
+    <string name="hint_add_special_conditions">Добавьте особые условия</string>
+    <string name="hint_add_structure">Добавьте состав</string>
+    <string name="hint_add_dosage_form">Добавьте лекарственную форму</string>
+    <string name="hint_add_expiration_date">Добавьте срок годности</string>
+    <string name="hint_add_manufacturer_country">Добавьте страну происхождения</string>
+    <string name="hint_add_manufacturer">Добавьте производителя</string>
+    <string name="hint_add_descritption">Добавьте описание</string>
+    <string name="drug_search">Поиск</string>
+    <string name="help_text">
+    "Приложение предназначено для предоставления удобного доступа к актуальной и достоверной информации о лекарственных препаратах для пациентов и медицинских работников. \n\n
+    Возможности приложения включают в себя: \n\n
+    1.  Поиск - страница для поиска лекарств по названию и просмотр их детальной информации. \n\n
+    2.  Недавние - страница для просмотра недавно открытых страниц лекарств и переход на них. \n\n
+    3.  Профиль - страница для отображения профиля пользователя и отображение созданных им коллекций."
+    </string>
+
+</resources>

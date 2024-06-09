@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/light_blue">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/conftim_changes_btn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="15dp"
+                android:background="@null"
+                android:src="@drawable/drug_creation_confrim"
+                android:visibility="gone"
+                android:importantForAccessibility="no" />
+
+            <ImageButton
+                android:id="@+id/edit_btn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="15dp"
+                android:background="@null"
+                android:src="@drawable/baseline_edit_24"
+                android:visibility="gone"
+                android:importantForAccessibility="no" />
+
+            <ImageButton
+                android:id="@+id/delete_btn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="15dp"
+                android:background="@null"
+                android:src="@drawable/baseline_delete_24"
+                android:visibility="gone"
+                android:importantForAccessibility="no" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/add_to_collection_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="Создать новый список"
+            android:background="@null"
+            android:src="@drawable/add_icon"
+            tools:ignore="HardcodedText"
+            android:layout_gravity="end"
+            android:layout_marginEnd="25dp"
+            android:layout_alignParentEnd="true" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <EditText
+                android:hint="@string/drug_name"
+                android:id="@+id/name_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:editable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:inputType="textMultiLine"
+                android:text="@string/drug_name"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:importantForAutofill="no" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/light_grey"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="7dp"
+                        android:text="@string/drug_description"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:drawableLeftCompat="@drawable/circle_grey" />
+
+                    <EditText
+                        android:hint="@string/hint_add_descritption"
+                        android:id="@+id/description_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@null"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="textMultiLine"
+                        android:paddingStart="16dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        tools:ignore="RtlSymmetry" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- CardView для Производитель -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/light_grey"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="7dp"
+                        android:text="@string/manufacturer"
+                        android:textSize="18sp"
+                        app:drawableLeftCompat="@drawable/circle_grey" />
+
+
+                    <EditText
+                        android:id="@+id/manufacturer_text_view"
+                        android:hint="@string/hint_add_manufacturer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@null"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="textMultiLine"
+                        android:paddingStart="16dp"
+                        android:textSize="16sp"
+                        tools:ignore="RtlSymmetry" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- CardView для Страна происхождения -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/light_grey"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="7dp"
+                        android:text="@string/manufacturer_country"
+                        android:textSize="18sp"
+                        app:drawableLeftCompat="@drawable/circle_grey" />
+
+                    <EditText
+                        android:id="@+id/manufacturer_country_text_view"
+                        android:hint="@string/hint_add_manufacturer_country"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@null"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="textMultiLine"
+                        android:paddingStart="16dp"
+                        android:textSize="16sp"
+                        tools:ignore="RtlSymmetry"
+                        android:importantForAutofill="no" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/light_grey"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="7dp"
+                        android:text="@string/expiration_date"
+                        android:textSize="18sp"
+                        app:drawableLeftCompat="@drawable/circle_grey" />
+
+                    <EditText
+                        android:id="@+id/expiration_date_text_view"
+                        android:hint="@string/hint_add_expiration_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@null"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="textMultiLine"
+                        android:paddingStart="16dp"
+                        android:textSize="16sp"
+                        tools:ignore="RtlSymmetry,TextFields"
+                        android:importantForAutofill="no" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/light_grey"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="7dp"
+                        android:text="@string/dosage_form"
+                        android:textSize="18sp"
+                        app:drawableLeftCompat="@drawable/circle_grey" />
+
+                    <EditText
+                        android:id="@+id/dosage_form_text_view"
+                        android:hint="@string/hint_add_dosage_form"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@null"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="textMultiLine"
+                        android:paddingStart="16dp"
+                        android:textSize="16sp"
+                        tools:ignore="RtlSymmetry"
+                        android:importantForAutofill="no" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/light_grey"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="7dp"
+                        android:text="@string/structure"
+                        android:textSize="18sp"
+                        app:drawableLeftCompat="@drawable/circle_grey" />
+
+                    <EditText
+                        android:id="@+id/structure_text_view"
+                        android:hint="@string/hint_add_structure"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@null"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="textMultiLine"
+                        android:maxLines="3"
+                        android:paddingStart="16dp"
+                        android:textSize="16sp"
+                        tools:ignore="RtlSymmetry"
+                        android:importantForAutofill="no" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/light_grey"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="7dp"
+                        android:text="@string/special_conditions"
+                        android:textSize="18sp"
+                        app:drawableLeftCompat="@drawable/circle_grey" />
+
+                    <EditText
+                        android:id="@+id/special_conditions_text_view"
+                        android:hint="@string/hint_add_special_conditions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@null"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="textMultiLine"
+                        android:paddingStart="16dp"
+                        android:textSize="16sp"
+                        tools:ignore="RtlSymmetry"
+                        android:importantForAutofill="no" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/light_grey"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="7dp"
+                        android:text="@string/drug_interaction"
+                        android:textSize="18sp"
+                        app:drawableLeftCompat="@drawable/circle_grey" />
+
+                    <EditText
+                        android:id="@+id/drug_interaction_text_view"
+                        android:hint="@string/hint_add_drug_interaction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@null"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="textMultiLine"
+                        android:paddingStart="16dp"
+                        android:textSize="16sp"
+                        tools:ignore="RtlSymmetry"
+                        android:importantForAutofill="no" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/light_grey"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="7dp"
+                        android:text="@string/indications"
+                        android:textSize="18sp"
+                        app:drawableLeftCompat="@drawable/circle_green" />
+
+                    <EditText
+                        android:id="@+id/indications_text_view"
+                        android:hint="@string/hint_add_indications"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@null"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="textMultiLine"
+                        android:paddingStart="16dp"
+                        android:textSize="16sp"
+                        tools:ignore="RtlSymmetry"
+                        android:importantForAutofill="no" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/light_grey"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="7dp"
+                        android:text="@string/contraindications"
+                        android:textSize="18sp"
+                        app:drawableLeftCompat="@drawable/circle_red" />
+
+                    <EditText
+                        android:id="@+id/contraindications_text_view"
+                        android:hint="@string/hint_add_contraindications"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@null"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="textMultiLine"
+                        android:paddingStart="16dp"
+                        android:textSize="16sp"
+                        tools:ignore="LabelFor,RtlSymmetry"
+                        android:importantForAutofill="no" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/light_grey"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="7dp"
+                        android:text="@string/overdose"
+                        android:textSize="18sp"
+                        app:drawableLeftCompat="@drawable/circle_yellow" />
+
+                    <EditText
+                        android:id="@+id/overdose_text_view"
+                        android:hint="@string/hint_add_overdose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@null"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="textMultiLine"
+                        android:paddingStart="16dp"
+                        android:textSize="16sp"
+                        tools:ignore="RtlSymmetry"
+                        android:importantForAutofill="no" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/light_grey"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="7dp"
+                        android:text="@string/side_effects"
+                        android:textSize="18sp"
+                        app:drawableLeftCompat="@drawable/circle_yellow" />
+
+                    <EditText
+                        android:id="@+id/side_effects_text_view"
+                        android:hint="@string/hint_add_side_effect"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@null"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="textMultiLine"
+                        android:paddingStart="16dp"
+                        android:textSize="16sp"
+                        tools:ignore="RtlSymmetry"
+                        android:importantForAutofill="no" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
