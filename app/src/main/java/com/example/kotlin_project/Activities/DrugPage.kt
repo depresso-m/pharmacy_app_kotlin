@@ -20,9 +20,11 @@ import com.example.kotlin_project.Other.Drug
 import com.example.kotlin_project.R
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.*
-import java.util.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class DrugPage : AppCompatActivity() {
 
@@ -146,7 +148,11 @@ class DrugPage : AppCompatActivity() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                Toast.makeText(this@DrugPage, "Ошибка чтения данных: " + databaseError.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@DrugPage,
+                    "Ошибка чтения данных: " + databaseError.message,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
 
@@ -169,7 +175,8 @@ class DrugPage : AppCompatActivity() {
             if (updatedName.isEmpty() || updatedDescription.isEmpty() || updatedManufacturer.isEmpty() || updatedExpirationDate.isEmpty() ||
                 updatedManufacturerCountry.isEmpty() || updatedDosageForm.isEmpty() || updatedStructure.isEmpty() ||
                 updatedSpecialConditions.isEmpty() || updatedDrugInteraction.isEmpty() || updatedIndications.isEmpty() ||
-                updatedContraindications.isEmpty() || updatedOverdose.isEmpty() || updatedSideEffects.isEmpty()) {
+                updatedContraindications.isEmpty() || updatedOverdose.isEmpty() || updatedSideEffects.isEmpty()
+            ) {
                 Toast.makeText(this, "Не должно быть пустых полей", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -192,18 +199,73 @@ class DrugPage : AppCompatActivity() {
             )
 
             // Обновляем данные в базе данных
-            mDatabase.updateChildren(updates).addOnCompleteListener(OnCompleteListener<Void> { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(this, "Изменения сохранены", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "Ошибка сохранения изменений", Toast.LENGTH_SHORT).show()
-                }
-            })
+            mDatabase.updateChildren(updates)
+                .addOnCompleteListener(OnCompleteListener<Void> { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(this, "Изменения сохранены", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "Ошибка сохранения изменений", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                })
         }
 
         editBtn.setOnClickListener {
-            enableEditing()
+            drugNameTextView.isEnabled = true
+            drugNameTextView.isFocusable = true
+            drugNameTextView.isFocusableInTouchMode = true
+
+            drugDescriptionTextView.isEnabled = true
+            drugDescriptionTextView.isFocusable = true
+            drugDescriptionTextView.isFocusableInTouchMode = true
+
+            drugManufacturerTextView.isEnabled = true
+            drugManufacturerTextView.isFocusable = true
+            drugManufacturerTextView.isFocusableInTouchMode = true
+
+            drugExpirationDateTextView.isEnabled = true
+            drugExpirationDateTextView.isFocusable = true
+            drugExpirationDateTextView.isFocusableInTouchMode = true
+
+            drugManufacturerCountryTextView.isEnabled = true
+            drugManufacturerCountryTextView.isFocusable = true
+            drugManufacturerCountryTextView.isFocusableInTouchMode = true
+
+            drugDosageFormTextView.isEnabled = true
+            drugDosageFormTextView.isFocusable = true
+            drugDosageFormTextView.isFocusableInTouchMode = true
+
+            drugStructureTextView.isEnabled = true
+            drugStructureTextView.isFocusable = true
+            drugStructureTextView.isFocusableInTouchMode = true
+
+            drugSpecialConditionTextView.isEnabled = true
+            drugSpecialConditionTextView.isFocusable = true
+            drugSpecialConditionTextView.isFocusableInTouchMode = true
+
+            drugInteractionTextView.isEnabled = true
+            drugInteractionTextView.isFocusable = true
+            drugInteractionTextView.isFocusableInTouchMode = true
+
+            drugIndicationsTextView.isEnabled = true
+            drugIndicationsTextView.isFocusable = true
+            drugIndicationsTextView.isFocusableInTouchMode = true
+
+            drugContraIndicationsTextView.isEnabled = true
+            drugContraIndicationsTextView.isFocusable = true
+            drugContraIndicationsTextView.isFocusableInTouchMode = true
+
+            drugOverdoseTextView.isEnabled = true
+            drugOverdoseTextView.isFocusable = true
+            drugOverdoseTextView.isFocusableInTouchMode = true
+
+            drugSideEffectTextView.isEnabled = true
+            drugSideEffectTextView.isFocusable = true
+            drugSideEffectTextView.isFocusableInTouchMode = true
+
+            Toast.makeText(this@DrugPage, "Включен режим редактирования", Toast.LENGTH_SHORT).show()
         }
+
 
         deleteBtn.setOnClickListener {
             // Создаем диалоговое окно для подтверждения удаления
@@ -217,7 +279,8 @@ class DrugPage : AppCompatActivity() {
                             Toast.makeText(this, "Препарат удален", Toast.LENGTH_SHORT).show()
                             finish() // Закрываем активити после удаления
                         } else {
-                            Toast.makeText(this, "Ошибка удаления препарата", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Ошибка удаления препарата", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                     dialog.dismiss()
@@ -230,77 +293,55 @@ class DrugPage : AppCompatActivity() {
         }
     }
 
-    // Включаем режим редактирования для всех полей
-    private fun enableEditing() {
-        drugNameTextView.isEnabled = true
-        drugDescriptionTextView.isEnabled = true
-        drugManufacturerTextView.isEnabled = true
-        drugExpirationDateTextView.isEnabled = true
-        drugManufacturerCountryTextView.isEnabled = true
-        drugDosageFormTextView.isEnabled = true
-        drugStructureTextView.isEnabled = true
-        drugSpecialConditionTextView.isEnabled = true
-        drugInteractionTextView.isEnabled = true
-        drugIndicationsTextView.isEnabled = true
-        drugContraIndicationsTextView.isEnabled = true
-        drugOverdoseTextView.isEnabled = true
-        drugSideEffectTextView.isEnabled = true
-
-        Toast.makeText(this@DrugPage, "Включен режим редактирования", Toast.LENGTH_SHORT).show()
-    }
-
     // Функция для отображения диалогового окна с коллекцией
     private fun showCollectionDialog() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Выберите коллекцию")
+        val userUid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val addingPathDatabase = FirebaseDatabase.getInstance().getReference("Collection/$userUid")
 
-        // Получение списка коллекций из базы данных Firebase
-        val collectionRef = FirebaseDatabase.getInstance().getReference("Collections")
-        collectionRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val collectionList = ArrayList<String>()
+        val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder.setTitle("Добавить в аптечку")
 
-                for (collectionSnapshot in dataSnapshot.children) {
-                    val collectionName = collectionSnapshot.child("name").getValue(String::class.java)
-                    collectionName?.let { collectionList.add(it) }
+        addingPathDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val collections = mutableListOf<String>()
+                for (collectionSnapshot in snapshot.children) {
+                    val collectionName = collectionSnapshot.key
+                    if (collectionName != null) {
+                        collections.add(collectionName)
+                    }
                 }
 
-                // Создаем адаптер для отображения списка коллекций в диалоговом окне
-                val adapter = ArrayAdapter(this@DrugPage, android.R.layout.simple_list_item_1, collectionList)
+                val adapter = ArrayAdapter<String>(
+                    applicationContext,
+                    android.R.layout.simple_list_item_1,
+                    collections
+                )
+                dialogBuilder.setAdapter(adapter, DialogInterface.OnClickListener { dialog, which ->
+                    val selectedCollection = collections[which]
+                    val drugKey = intent.getStringExtra("drug_key")
 
-                builder.setAdapter(adapter) { dialog, which ->
-                    val selectedCollectionName = collectionList[which]
+                    val contentRef = FirebaseDatabase.getInstance()
+                        .getReference("Collection/$userUid/$selectedCollection/Content/$drugKey")
+                    contentRef.setValue(true).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(this@DrugPage, "Добавлено в аптечку", Toast.LENGTH_SHORT)
+                                .show()
+                        } else {
+                            Toast.makeText(this@DrugPage, "Ошибка добавления", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                    dialog.dismiss()
+                })
 
-                    // Выполняем действия по добавлению препарата в выбранную коллекцию
-                    addToCollection(selectedCollectionName)
-                }
-
-                // Показываем диалоговое окно
-                builder.show()
+                val dialog = dialogBuilder.create()
+                dialog.show()
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                Toast.makeText(this@DrugPage, "Ошибка чтения данных: " + databaseError.message, Toast.LENGTH_SHORT).show()
+            override fun onCancelled(error: DatabaseError) {
+                // TODO: handle error
             }
         })
-    }
-
-    // Функция для добавления препарата в выбранную коллекцию
-    private fun addToCollection(collectionName: String) {
-        // Получаем идентификатор препарата
-        val drugKey = intent.getStringExtra("drug_key") ?: return
-
-        // Получаем ссылку на коллекцию
-        val collectionRef = FirebaseDatabase.getInstance().getReference("Collections").child(collectionName).child("drugs")
-
-        // Добавляем идентификатор препарата в коллекцию
-        collectionRef.child(drugKey).setValue(true).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Toast.makeText(this, "Препарат добавлен в коллекцию $collectionName", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Ошибка добавления препарата в коллекцию", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     // Обрабатываем нажатие кнопки "Назад"
@@ -310,6 +351,7 @@ class DrugPage : AppCompatActivity() {
                 finish()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
