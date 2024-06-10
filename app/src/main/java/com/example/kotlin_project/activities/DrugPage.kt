@@ -1,4 +1,4 @@
-package com.example.kotlin_project.Activities
+package com.example.kotlin_project.activities
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -16,7 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import com.example.kotlin_project.Other.Drug
+import com.example.kotlin_project.other.Drug
 import com.example.kotlin_project.R
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
@@ -339,7 +339,6 @@ class DrugPage : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // TODO: handle error
             }
         })
     }

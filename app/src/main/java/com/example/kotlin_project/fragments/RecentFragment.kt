@@ -1,7 +1,6 @@
-package com.example.kotlin_project.Fragments
+package com.example.kotlin_project.fragments
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,10 +11,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kotlin_project.Activities.DrugPage
-import com.example.kotlin_project.Other.Drug
-import com.example.kotlin_project.Other.DrugAdapter
-import com.example.kotlin_project.Other.DrugDatabaseHelper
+import com.example.kotlin_project.activities.DrugPage
+import com.example.kotlin_project.other.Drug
+import com.example.kotlin_project.other.DrugAdapter
+import com.example.kotlin_project.other.DrugDatabaseHelper
 import com.example.kotlin_project.R
 import com.google.firebase.database.*
 

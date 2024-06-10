@@ -1,4 +1,4 @@
-package com.example.kotlin_project.Activities
+package com.example.kotlin_project.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,7 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.example.kotlin_project.Other.User
+import com.example.kotlin_project.other.User
 import com.example.kotlin_project.R
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth

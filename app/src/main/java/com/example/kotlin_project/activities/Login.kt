@@ -1,4 +1,4 @@
-package com.example.kotlin_project.Activities
+package com.example.kotlin_project.activities
 
 import android.content.Intent
 import android.os.Bundle

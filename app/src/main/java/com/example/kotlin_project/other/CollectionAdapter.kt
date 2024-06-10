@@ -1,4 +1,4 @@
-package com.example.kotlin_project.Other
+package com.example.kotlin_project.other
 
 import android.view.LayoutInflater
 import android.view.View
