@@ -1,4 +1,4 @@
-package com.example.kotlin_project.other
+package com.example.kotlin_project.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,19 +6,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlin_project.R
+import com.example.kotlin_project.model.Collection
 
-class CollectionAdapter(private var collections: ArrayList<Collection>) :
-    RecyclerView.Adapter<CollectionAdapter.ViewHolder>() {
+class CollectionAdapter : RecyclerView.Adapter<CollectionAdapter.ViewHolder>() {
 
+    private var collections = ArrayList<Collection>()
     private var listener: OnItemClickListener? = null
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val nameTextView: TextView = view.findViewById(R.id.collection_name)
-
-        fun bind(collection: Collection) {
-            nameTextView.text = collection.name
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_collection, parent, false)
@@ -40,11 +33,19 @@ class CollectionAdapter(private var collections: ArrayList<Collection>) :
         notifyDataSetChanged()
     }
 
-    interface OnItemClickListener {
-        fun onItemClick(collection: Collection?)
-    }
-
     fun setOnItemClickListener(listener: OnItemClickListener?) {
         this.listener = listener
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(collection: Collection?) // Specify Collection here
+    }
+
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val nameTextView: TextView = view.findViewById(R.id.collection_name)
+
+        fun bind(collection: Collection) {
+            nameTextView.text = collection.name
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.kotlin_project.other
+package com.example.kotlin_project.util
 
 import android.content.ContentValues
 import android.content.Context

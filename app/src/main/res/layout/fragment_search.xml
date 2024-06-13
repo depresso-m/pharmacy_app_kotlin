@@ -1,29 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.SearchFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/drugs_list"
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kotlin_project.viewmodel.DrugViewModel" />
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="650dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_drug" />
+        android:layout_height="match_parent">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        android:backgroundTint="@color/light_grey"
-        android:focusable="true"
-        android:src="@drawable/floating_button_icon"
-        android:visibility="gone"
-        android:importantForAccessibility="no" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/drugs_list"
+            android:layout_width="match_parent"
+            android:layout_height="650dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_drug" />
 
-</FrameLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:backgroundTint="@color/light_grey"
+            android:focusable="true"
+            android:src="@drawable/floating_button_icon"
+            android:visibility="gone"
+            android:importantForAccessibility="no" />
+
+    </FrameLayout>
+</layout>

@@ -1,4 +1,4 @@
-package com.example.kotlin_project.other
+package com.example.kotlin_project.model
 
 class User {
     var uid: String? = null

@@ -12,9 +12,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlin_project.activities.DrugPage
-import com.example.kotlin_project.other.Drug
-import com.example.kotlin_project.other.DrugAdapter
-import com.example.kotlin_project.other.DrugDatabaseHelper
+import com.example.kotlin_project.model.Drug
+import com.example.kotlin_project.adapter.DrugAdapter
+import com.example.kotlin_project.util.DrugDatabaseHelper
 import com.example.kotlin_project.R
 import com.google.firebase.database.*
 
@@ -26,6 +26,7 @@ class RecentFragment : Fragment() {
     private lateinit var drugDatabaseHelper: DrugDatabaseHelper
     private lateinit var clearRecent: ImageButton
     private lateinit var recyclerView: RecyclerView
+    private lateinit var toolbarTitle: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +34,7 @@ class RecentFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_recent, container, false)
 
-        val toolbarTitle: TextView = requireActivity().findViewById(R.id.toolbar_title)
+        toolbarTitle = requireActivity().findViewById(R.id.toolbar_title)
         toolbarTitle.visibility = View.VISIBLE
         toolbarTitle.text = "Недавние"
 
@@ -67,11 +68,11 @@ class RecentFragment : Fragment() {
     private fun getRecentDrugsFromLocalDB() {
         val recentDrugKeys = drugDatabaseHelper.recentDrugs
 
-        if (recentDrugKeys != null && recentDrugKeys.isNotEmpty()) {
+        if (recentDrugKeys.isNotEmpty()) {
             val databaseReference = FirebaseDatabase.getInstance().getReference("Drug")
 
             for (drugKey in recentDrugKeys) {
-                if (!drugKey.isNullOrEmpty()) {
+                if (drugKey.isNotEmpty()) {
                     databaseReference.child(drugKey).addListenerForSingleValueEvent(object : ValueEventListener {
                         @SuppressLint("NotifyDataSetChanged")
                         override fun onDataChange(snapshot: DataSnapshot) {

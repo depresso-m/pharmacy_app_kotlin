@@ -1,4 +1,4 @@
-package com.example.kotlin_project.other
+package com.example.kotlin_project.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlin_project.R
+import com.example.kotlin_project.model.Drug
+import com.example.kotlin_project.util.DrugDatabaseHelper
 
 class DrugAdapter(private val context: Context, private var drugs: ArrayList<Drug>) :
     RecyclerView.Adapter<DrugAdapter.ViewHolder>() {

@@ -10,8 +10,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.example.kotlin_project.other.User
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.example.kotlin_project.model.User
 import com.example.kotlin_project.R
+import com.example.kotlin_project.model.Collection
+import com.example.kotlin_project.viewmodel.CollectionViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -29,6 +33,7 @@ class Register : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var textView: TextView
     private lateinit var mDataBase: DatabaseReference
+    private lateinit var collectionViewModel: CollectionViewModel
 
     override fun onStart() {
         super.onStart()
@@ -56,6 +61,7 @@ class Register : AppCompatActivity() {
         buttonReg = findViewById(R.id.btn_register)
         progressBar = findViewById(R.id.progressBar)
         textView = findViewById(R.id.loginNow)
+        collectionViewModel = ViewModelProvider(this).get(CollectionViewModel::class.java)
 
         textView.setOnClickListener {
             val intent = Intent(applicationContext, Login::class.java)
@@ -110,9 +116,7 @@ class Register : AppCompatActivity() {
                         // Сохраняем новый объект User в Firebase Realtime Database
                         mDataBase.child(uid).setValue(newUser)
 
-                        val intent = Intent(applicationContext, Login::class.java)
-                        startActivity(intent)
-                        finish()
+                        navigateToMainActivity(name)
 
                     } else {
                         // If sign in fails, display a message to the user.
@@ -120,5 +124,12 @@ class Register : AppCompatActivity() {
                     }
                 }
         }
+    }
+
+    private fun navigateToMainActivity(userName : String) {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("userName", userName)
+        startActivity(intent)
+        finish()
     }
 }

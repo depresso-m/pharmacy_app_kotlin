@@ -8,12 +8,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.kotlin_project.R
 import com.example.kotlin_project.activities.DrugPage
 import com.example.kotlin_project.activities.DrugPageCreation
-import com.example.kotlin_project.other.Drug
-import com.example.kotlin_project.other.DrugAdapter
-import com.example.kotlin_project.R
+import com.example.kotlin_project.databinding.FragmentSearchBinding
+import com.example.kotlin_project.model.Drug
+import com.example.kotlin_project.adapter.DrugAdapter
+import com.example.kotlin_project.viewmodel.DrugViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -23,13 +27,12 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 class SearchFragment : Fragment() {
-    private var isAdmin = false
-    private var searchView: SearchView? = null
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var database: DatabaseReference
+
+    private val viewModel: DrugViewModel by viewModels()
+    private lateinit var binding: FragmentSearchBinding
     private lateinit var adapter: DrugAdapter
     private lateinit var floatingActionButton: FloatingActionButton
-    private lateinit var list: ArrayList<Drug>
+    private lateinit var toolbarTitle: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,116 +40,71 @@ class SearchFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_search, container, false)
-        recyclerView = view.findViewById(R.id.drugs_list)
-        database = FirebaseDatabase.getInstance().getReference("Drug")
-        recyclerView.setHasFixedSize(true)
-
-        // Ищем searchView и toolbar_title в activity_main.xml
-        val activity = activity
-        if (activity != null) {
-            searchView = activity.findViewById(R.id.searchView)
-            val toolbar_title = activity.findViewById<TextView>(R.id.toolbar_title)
-            toolbar_title?.visibility = View.GONE
+        binding = FragmentSearchBinding.inflate(inflater, container, false).apply {
+            viewModel = this@SearchFragment.viewModel
+            lifecycleOwner = viewLifecycleOwner
         }
 
-        searchView?.visibility = View.VISIBLE
+        toolbarTitle = requireActivity().findViewById(R.id.toolbar_title)
+        toolbarTitle.visibility = View.GONE
 
-        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+        // Настройка RecyclerView
+        adapter = DrugAdapter(requireContext(), arrayListOf())
+        binding.drugsList.layoutManager = LinearLayoutManager(context)
+        binding.drugsList.adapter = adapter
+
+        // Настройка SearchView
+        val searchView = requireActivity().findViewById<SearchView>(R.id.searchView)
+        searchView.visibility = View.VISIBLE
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                // Выполняется при нажатии кнопки "Поиск" на клавиатуре
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                // Выполняется при изменении текста в SearchView
-                val filteredDrugs = filterDrugs(list, newText)
+                val filteredDrugs = filterDrugs(viewModel.drugs.value ?: arrayListOf(), newText)
                 adapter.setDrugs(filteredDrugs)
                 return true
             }
         })
 
-        // Получаем ссылку на узел "User" в Firebase Realtime Database
-        val databaseReference = FirebaseDatabase.getInstance().getReference("User")
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val firebaseUser = firebaseAuth.currentUser
+        // Наблюдаем за изменениями в списке лекарств
+        viewModel.drugs.observe(viewLifecycleOwner, Observer { drugs ->
+            adapter.setDrugs(ArrayList(drugs))
+        })
 
-        // Инициализируем floatingActionButton
-        floatingActionButton = view.findViewById(R.id.floatingActionButton)
-
-        // Проверяем, является ли текущий пользователь администратором
-        firebaseUser?.let {
-            val userId = it.uid
-            databaseReference.child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    // Получаем тип пользователя из базы данных
-                    val userType = snapshot.child("type").getValue(String::class.java)
-
-                    // Если пользователь является администратором, устанавливаем флаг isAdmin в true
-                    isAdmin = userType == "Admin"
-
-                    // Обновляем видимость кнопки floatingActionButton в зависимости от флага isAdmin
-                    floatingActionButton.visibility = if (isAdmin) View.VISIBLE else View.GONE
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    // Обрабатываем ошибку чтения данных из базы данных
-                }
-            })
-        }
-
-        // Устанавливаем слушатель нажатий на floatingActionButton
+        // Настройка кнопки FloatingActionButton
+        floatingActionButton = binding.floatingActionButton
+        setupFloatingActionButton()
         floatingActionButton.setOnClickListener {
             val intent = Intent(requireContext(), DrugPageCreation::class.java)
             startActivity(intent)
         }
 
-        list = ArrayList()
-        adapter = DrugAdapter(requireContext(), list)
-        recyclerView.adapter = adapter
-
-        // Устанавливаем обработчик нажатий на элементы списка
+        // Обработка кликов на элементы списка
         adapter.setOnItemClickListener(object : DrugAdapter.OnItemClickListener {
             override fun onItemClick(drug: Drug) {
-                // Сохраняем информацию о недавно открытом лекарстве в базе данных
+                // Сохраняем информацию о недавно открытом лекарстве
                 adapter.saveRecentDrug(drug.key)
 
-                // Открываем новую страницу с информацией о лекарстве
+                // Открываем страницу с информацией о лекарстве
                 val intent = Intent(requireContext(), DrugPage::class.java)
                 intent.putExtra("drug_key", drug.key)
                 startActivity(intent)
             }
         })
 
-
-        database.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                list.clear()
-                for (dataSnapshot in snapshot.children) {
-                    val drug = dataSnapshot.getValue(Drug::class.java)
-                    drug?.key = dataSnapshot.key
-                    drug?.let { list.add(it) }
-                }
-                adapter.setDrugs(list)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // обработка ошибки
-            }
-        })
-
-        return view
+        return binding.root
     }
 
-    // Метод фильтрования списка на основе введенного текста
-    private fun filterDrugs(drugs: ArrayList<Drug>, query: String): ArrayList<Drug> {
+    // Метод фильтрации списка на основе введенного текста
+    private fun filterDrugs(drugs: List<Drug>, query: String): ArrayList<Drug> {
         val filteredDrugs = ArrayList<Drug>()
         for (drug in drugs) {
-            if (drug.name?.toLowerCase()?.contains(query.toLowerCase()) == true) {
+            if (drug.name?.contains(query, ignoreCase = true) == true) {
                 filteredDrugs.add(drug)
             }
         }
@@ -155,6 +113,34 @@ class SearchFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        searchView?.visibility = View.GONE
+        requireActivity().findViewById<SearchView>(R.id.searchView).visibility = View.GONE
+    }
+
+    private fun setupFloatingActionButton() {
+        val databaseReference: DatabaseReference = FirebaseDatabase.getInstance().getReference("User")
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val firebaseUser = firebaseAuth.currentUser
+
+        firebaseUser?.let {
+            val userId = it.uid
+            databaseReference.child(userId).addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val userType = snapshot.child("type").getValue(String::class.java)
+                    val isAdmin = userType == "Admin"
+                    floatingActionButton.visibility = if (isAdmin) View.VISIBLE else View.GONE
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Handle error
+                }
+            })
+        }
+
+        floatingActionButton.setOnClickListener {
+            val intent = Intent(requireContext(), DrugPageCreation::class.java)
+            startActivity(intent)
+        }
     }
 }
+
