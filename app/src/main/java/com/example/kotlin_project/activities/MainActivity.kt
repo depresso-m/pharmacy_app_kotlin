@@ -2,6 +2,7 @@ package com.example.kotlin_project.activities
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -10,8 +11,7 @@ import com.example.kotlin_project.R
 import com.example.kotlin_project.fragments.CollectionFragment
 import com.example.kotlin_project.fragments.RecentFragment
 import com.example.kotlin_project.fragments.SearchFragment
-import com.example.kotlin_project.model.Drug
-import com.example.kotlin_project.model.Collection
+import com.example.kotlin_project.viewmodel.CollectionViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 
@@ -20,9 +20,7 @@ class MainActivity : AppCompatActivity() {
     private var currentFragment: Fragment? = null
     private lateinit var toolbar: Toolbar
     private lateinit var bottomNavigationView: BottomNavigationView
-    private var drugs: ArrayList<Drug>? = null
-    private var collections: ArrayList<Collection>? = null
-    private lateinit var userName: String
+    private val collectionViewModel: CollectionViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,21 +43,12 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationView = findViewById(R.id.bottom_navigation)
 
-        // Получение данных из Intent, переданных из SplashScreen
-        drugs = intent.getSerializableExtra("drugs") as? ArrayList<Drug>
-        collections = intent.getSerializableExtra("collections") as? ArrayList<Collection>
-        userName = intent.getStringExtra("userName") ?: ""
+        // Загрузка данных из ViewModel
+        collectionViewModel.loadCollections(firebaseUser.uid)
+        collectionViewModel.loadUserName(firebaseUser.uid)
 
-        // Если данные не удалось извлечь из Intent, инициализируем пустыми значениями
-        drugs = drugs ?: ArrayList()
-        collections = collections ?: ArrayList()
-
-        // Начальная установка фрагмента SearchFragment с передачей drugs в аргументах
-        currentFragment = SearchFragment().apply {
-            arguments = Bundle().apply {
-                putSerializable("drugs", drugs)
-            }
-        }
+        // Начальная установка фрагмента SearchFragment
+        currentFragment = SearchFragment()
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, currentFragment!!)
             .commit()
@@ -70,11 +59,7 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.action_item1 -> {
                     if (currentFragment is SearchFragment) return@setOnItemSelectedListener true
-                    selectedFragment = SearchFragment().apply {
-                        arguments = Bundle().apply {
-                            putSerializable("drugs", drugs)
-                        }
-                    }
+                    selectedFragment = SearchFragment()
                 }
                 R.id.action_item2 -> {
                     if (currentFragment is RecentFragment) return@setOnItemSelectedListener true
@@ -82,12 +67,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.action_item3 -> {
                     if (currentFragment is CollectionFragment) return@setOnItemSelectedListener true
-                    selectedFragment = CollectionFragment().apply {
-                        arguments = Bundle().apply {
-                            putSerializable("collections", collections)
-                            putString("userName", userName)
-                        }
-                    }
+                    selectedFragment = CollectionFragment()
                 }
             }
             if (selectedFragment != null) {

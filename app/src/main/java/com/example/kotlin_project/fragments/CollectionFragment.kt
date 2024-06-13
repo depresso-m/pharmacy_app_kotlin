@@ -11,27 +11,25 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kotlin_project.R
 import com.example.kotlin_project.activities.Login
 import com.example.kotlin_project.adapter.CollectionAdapter
 import com.example.kotlin_project.databinding.FragmentCollectionBinding
-import com.example.kotlin_project.model.Collection
 import com.example.kotlin_project.viewmodel.CollectionViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.example.kotlin_project.model.Collection
 
 class CollectionFragment : Fragment() {
 
     private lateinit var binding: FragmentCollectionBinding
     private lateinit var adapter: CollectionAdapter
-    private lateinit var userName: String
-    private lateinit var collections: ArrayList<Collection>
+    private val viewModel: CollectionViewModel by activityViewModels()
     private lateinit var createCollectionBtn: ImageButton
     private lateinit var exitBtn: ImageButton
     private lateinit var helpBtn: ImageButton
     private lateinit var toolbarTitle: TextView
-    private val viewModel: CollectionViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,24 +43,14 @@ class CollectionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userName = arguments?.getString("userName") ?: ""
-        collections = arguments?.getSerializable("collections") as? ArrayList<Collection> ?: arrayListOf()
-
         setupViews()
-        loadInitialData()
-        observeViewModel()
-
-        FirebaseAuth.getInstance().uid?.let { viewModel.loadCollections(it) }
         observeViewModel()
     }
-
 
     private fun setupViews() {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = CollectionAdapter()
         binding.recyclerView.adapter = adapter
-
-        binding.username.text = userName
 
         toolbarTitle = requireActivity().findViewById(R.id.toolbar_title)
         toolbarTitle.visibility = View.VISIBLE
@@ -90,7 +78,6 @@ class CollectionFragment : Fragment() {
             leaveFromApp()
         }
 
-        // Устанавливаем обработчик нажатий на элементы списка
         adapter.setOnItemClickListener(object : CollectionAdapter.OnItemClickListener {
             override fun onItemClick(collection: Collection?) {
                 collection?.let { selectedCollection ->
@@ -108,11 +95,13 @@ class CollectionFragment : Fragment() {
         })
     }
 
-    private fun loadInitialData() {
-        adapter.setCollections(collections)
-    }
-
     private fun observeViewModel() {
+        viewModel.userName.observe(viewLifecycleOwner) { userName ->
+            userName?.let {
+                binding.username.text = it
+            }
+        }
+
         viewModel.collections.observe(viewLifecycleOwner) { collections ->
             collections?.let {
                 adapter.setCollections(ArrayList(it))
@@ -127,15 +116,13 @@ class CollectionFragment : Fragment() {
         val dialogView = inflater.inflate(R.layout.dialog_create_collection, null)
         dialogBuilder.setView(dialogView)
 
-        val collectionNameEditText =
-            dialogView.findViewById<EditText>(R.id.collection_name_edit_text)
+        val collectionNameEditText = dialogView.findViewById<EditText>(R.id.collection_name_edit_text)
 
         dialogBuilder.setTitle("Создать новую коллекцию")
         dialogBuilder.setPositiveButton("Создать") { dialog, _ ->
             val collectionName = collectionNameEditText.text.toString()
             if (collectionName.isEmpty()) {
-                Toast.makeText(requireContext(), "Введите название коллекции", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(requireContext(), "Введите название коллекции", Toast.LENGTH_SHORT).show()
                 return@setPositiveButton
             }
             createNewCollection(collectionName)
@@ -149,12 +136,8 @@ class CollectionFragment : Fragment() {
     }
 
     private fun createNewCollection(collectionName: String) {
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        currentUser?.let { user ->
-            viewModel.createNewCollection(collectionName)
-            // После создания новой коллекции загружаем обновленный список
-            viewModel.loadCollections(user.uid)
-        }
+        viewModel.createNewCollection(collectionName)
+        viewModel.loadCollections(FirebaseAuth.getInstance().currentUser?.uid ?: "")
     }
 
     private fun leaveFromApp() {

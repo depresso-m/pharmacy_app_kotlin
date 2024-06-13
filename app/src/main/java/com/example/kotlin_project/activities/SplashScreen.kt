@@ -2,14 +2,11 @@ package com.example.kotlin_project.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.kotlin_project.R
-import com.example.kotlin_project.model.Drug
-import com.example.kotlin_project.model.Collection
 import com.example.kotlin_project.viewmodel.CollectionViewModel
 import com.example.kotlin_project.viewmodel.DrugViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -24,67 +21,50 @@ class SplashScreen : AppCompatActivity() {
         setContentView(R.layout.activity_splash_screen)
         window.statusBarColor = ContextCompat.getColor(this, R.color.light_blue)
 
-        // Получаем текущего пользователя Firebase
         val firebaseUser = FirebaseAuth.getInstance().currentUser
 
         if (firebaseUser == null) {
-            val intent = Intent(this, Login::class.java)
-            startActivity(intent)
-            finish()
+            navigateToLogin()
             return
         }
 
-        // Инициализируем DrugViewModel
         drugViewModel = ViewModelProvider(this).get(DrugViewModel::class.java)
-
-        // Инициализируем CollectionViewModel
         collectionViewModel = ViewModelProvider(this).get(CollectionViewModel::class.java)
 
-
-
-        // Наблюдаем за LiveData в DrugViewModel
         drugViewModel.drugs.observe(this, Observer { drugs ->
             if (drugs != null && drugs.isNotEmpty()) {
-                // После загрузки лекарств запускаем загрузку коллекций
                 firebaseUser?.let { user ->
                     collectionViewModel.loadCollections(user.uid)
                     collectionViewModel.loadUserName(user.uid)
                 } ?: run {
-                    // Если пользователь не авторизован, переходим на экран входа
-                    val intent = Intent(this, Login::class.java)
-                    startActivity(intent)
-                    finish()
+                    navigateToLogin()
                 }
             }
         })
 
-        // Наблюдаем за LiveData в CollectionViewModel
         collectionViewModel.collections.observe(this, Observer { collections ->
-            if (collections != null && collections.isNotEmpty()) {
-                // Когда и лекарства, и коллекции загружены, переходим в MainActivity
+            if (collections != null) {
                 collectionViewModel.userName.observe(this, Observer { userName ->
                     if (userName != null) {
-                        drugViewModel.drugs.value?.let { navigateToMainActivity(it, collections, userName) }
+                        navigateToMainActivity()
                     } else {
-                        Log.d("SplashScreen", "User name is null")
-                        // Handle case when user name is null
+                        navigateToLogin()
                     }
                 })
             }
         })
 
-        // Запускаем загрузку данных о лекарствах
         drugViewModel.loadDrugs()
     }
 
-    private fun navigateToMainActivity(drugs: List<Drug>, collections: List<Collection>, userName: String) {
+    private fun navigateToMainActivity() {
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("drugs", ArrayList(drugs))
-        intent.putExtra("collections", ArrayList(collections))
-        intent.putExtra("userName", userName)
+        startActivity(intent)
+        finish()
+    }
 
-        Log.d("SplashScreen", "Navigating to MainActivity with userName: $userName")
-
+    private fun navigateToLogin() {
+        val intent = Intent(this, Login::class.java)
         startActivity(intent)
         finish()
     }
